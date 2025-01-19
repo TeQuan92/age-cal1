@@ -1,19 +1,24 @@
 <?php
-function calculateAge($dateOfBirth) {
-    // Create a DateTime object from the date of birth
-    $dob = new DateTime($dateOfBirth);
-    // Create a DateTime object for the current date
-    $today = new DateTime('today');
-    
-    // Calculate the difference between the current date and the date of birth
-    $age = $today->diff($dob);
-    
-    // Return the age in years
-    return $age->y;
-}
 
-// Example usage:
-$dateOfBirth = '1990-05-15';
-echo 'Age: ' . calculateAge($dateOfBirth);
+// Add shortcode for age calculation.
+function calculate_years_shortcode( $atts ) {
+   $years = '';
+   // Attributes
+   $atts = shortcode_atts(
+      array(
+         'datestring' => '',
+      ),
+      $atts
+   );
+   if ($atts['datestring'] != '') {
+      $beginningdate = new DateTime($atts['datestring']);
+      $today = new DateTime(date('m/d/Y'));
+      $diff = $today->diff($beginningdate);
+      $years = $diff->y;
+   }
+   return $years;
+}
+add_shortcode( 'calculate_years', 'calculate_years_shortcode' );
+
 ?>
 
